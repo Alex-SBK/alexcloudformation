@@ -1,0 +1,6 @@
+Resources:
+  SubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.32.0
+      VpcId:
