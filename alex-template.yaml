@@ -20,9 +20,12 @@ Resources:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
       DependsOn: VPC
+
   SUBNETSTACK:
     Type: AWS::CloudFormarion::Stack
     Properties:
-    TemplateURL: 
+    TemplateURL: https://raw.githubusercontent.com/Alex-SBK/alexcloudformation/master/subnets-nested-stack.yaml
+    Paremeters:
+      VpcIdParam: !Ref VPC
 
 
