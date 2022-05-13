@@ -1,8 +1,51 @@
 Resources:
-  SubnetA:
+  PublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      CidrBlock: 10.0.32.0/24
+      CidrBlock: 10.0.0.0/19
       VpcId: !Ref VpcIdParam
       AvailabilityZone: !Select [ 1, !GetAZs '' ]
-      
+      Tags:
+        - Key: Name
+          Value: publicSubnet
+  DBSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      CidrBlock: 10.0.32.0/19
+      VpcId: !Ref VpcIdParam
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      Tags:
+        - Key: Name
+          Value: DBSubnet
+  RouteTablePublic:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VpcIdParam
+      Tags:
+        - Key: Name
+          Value: rt-public
+  RouteTablePublicDefault:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: RouteTablePublic
+      DestinationCidrBlock: '0.0.0.0/0'
+      GatewayId:
+        Ref: !Ref IgwIdParam
+
+  # RouteTablePrivate:
+  #   Type: AWS::EC2::RouteTable
+  #   Properties:
+  #     VpcId: !Ref VpcIdParam
+  #     Tags:
+  #       - Key: Name
+  #         Value: rt-private
+
+
+Parameters:
+  VpcIdParam:
+    Description: ID of VPC
+    Type: String
+  IgwIdParam:
+    Description: ID of Gateway
+    Type: String

@@ -14,18 +14,19 @@ Resources:
       Tags:
         - Key: Name
           Value: alex-vpc1-igw1
+
   InternetGatewayAttachment:
     Type: 'AWS::EC2::VPCGatewayAttachment'
+    DependsOn: VPC
     Properties:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
-      DependsOn: VPC
 
   SUBNETSTACK:
-    Type: AWS::CloudFormarion::Stack
+    DependsOn: InternetGatewayAttachment
+    Type: AWS::CloudFormation::Stack
     Properties:
-    TemplateURL: https://raw.githubusercontent.com/Alex-SBK/alexcloudformation/master/subnets-nested-stack.yaml
-    Paremeters:
-      VpcIdParam: !Ref VPC
-
-
+      TemplateURL: https://cf-templates-1j19vo3uv948v-us-east-1.s3.amazonaws.com/subnets-nested-stack.yaml
+      Parameters:
+        VpcIdParam: !Ref VPC
+        IgwIdParam: !Ref InternetGateway
