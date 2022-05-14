@@ -74,6 +74,7 @@ Resources:
       SubnetId: !Ref SubnetWEBA
       RouteTableId:
         Ref: RouteTableWeb
+
   RouteTableAssociationWebB:
     Type: 'AWS::EC2::SubnetRouteTableAssociation'
     Properties:

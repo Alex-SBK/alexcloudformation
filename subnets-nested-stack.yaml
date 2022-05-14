@@ -17,6 +17,8 @@ Resources:
       Tags:
         - Key: Name
           Value: DBSubnet
+
+  # Public RT
   RouteTablePublic:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -24,22 +26,19 @@ Resources:
       Tags:
         - Key: Name
           Value: rt-public
-  RouteTablePublicDefault:
+  RouteTablePublicDefaultIPv4:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId:
         Ref: RouteTablePublic
       DestinationCidrBlock: '0.0.0.0/0'
-      GatewayId:
-        Ref: !Ref IgwIdParam
+      GatewayId: !Ref IgwIdParam
+  SubnetRouteTableAssociationPublicSn:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref RouteTablePublic
+      SubnetId: !Ref PublicSubnet
 
-  # RouteTablePrivate:
-  #   Type: AWS::EC2::RouteTable
-  #   Properties:
-  #     VpcId: !Ref VpcIdParam
-  #     Tags:
-  #       - Key: Name
-  #         Value: rt-private
 
 
 Parameters:

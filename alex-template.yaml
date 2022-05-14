@@ -23,10 +23,18 @@ Resources:
       InternetGatewayId: !Ref InternetGateway
 
   SUBNETSTACK:
-    DependsOn: InternetGatewayAttachment
+    DependsOn:
+      - InternetGateway
+      - VPC
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: https://cf-templates-1j19vo3uv948v-us-east-1.s3.amazonaws.com/subnets-nested-stack.yaml
       Parameters:
         VpcIdParam: !Ref VPC
         IgwIdParam: !Ref InternetGateway
+
+
+Outputs:
+  StackVPC:
+    Description: The ID of the VPC
+    Value: !Ref VPC
