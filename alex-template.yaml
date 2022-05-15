@@ -22,7 +22,7 @@ Resources:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
 
-  SUBNETSTACK:
+  SUBNETSTACK1:
     DependsOn:
       - InternetGateway
       - VPC
@@ -32,9 +32,26 @@ Resources:
       Parameters:
         VpcIdParam: !Ref VPC
         IgwIdParam: !Ref InternetGateway
-
+        PublicCIDR: "10.0.0.0/19"
+        DBCIDR: "10.0.32.0/19"
+        AZnumber: "0"
+  SUBNETSTACK2:
+    DependsOn:
+      - InternetGateway
+      - VPC
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://cf-templates-1j19vo3uv948v-us-east-1.s3.amazonaws.com/subnets-nested-stack.yaml
+      Parameters:
+        VpcIdParam: !Ref VPC
+        IgwIdParam: !Ref InternetGateway
+        PublicCIDR: "10.0.64.0/19"
+        DBCIDR: "10.0.96.0/19"
+        AZnumber: "1"
 
 Outputs:
   StackVPC:
     Description: The ID of the VPC
     Value: !Ref VPC
+    Export:
+      Name: SHAREDVPC

@@ -2,18 +2,18 @@ Resources:
   PublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      CidrBlock: 10.0.0.0/19
+      CidrBlock: !Ref PublicCIDR
       VpcId: !Ref VpcIdParam
-      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      AvailabilityZone: !Select [ !Ref AZnumber, !GetAZs '' ]
       Tags:
         - Key: Name
           Value: publicSubnet
   DBSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      CidrBlock: 10.0.32.0/19
+      CidrBlock: !Ref DBCIDR
       VpcId: !Ref VpcIdParam
-      AvailabilityZone: !Select [ 1, !GetAZs '' ]
+      AvailabilityZone: !Select [ !Ref AZnumber, !GetAZs '' ]
       Tags:
         - Key: Name
           Value: DBSubnet
@@ -39,8 +39,6 @@ Resources:
       RouteTableId: !Ref RouteTablePublic
       SubnetId: !Ref PublicSubnet
 
-
-
 Parameters:
   VpcIdParam:
     Description: ID of VPC
@@ -48,3 +46,13 @@ Parameters:
   IgwIdParam:
     Description: ID of Gateway
     Type: String
+  PublicCIDR:
+    Description: CIDR for public Subnet
+    Type: String
+  DBCIDR:
+    Description: CIDR for DB Subnet
+    Type: String
+  AZnumber:
+    Description: Number of AZ
+    Type: String
+
