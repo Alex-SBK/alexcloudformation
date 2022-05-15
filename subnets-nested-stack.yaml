@@ -3,11 +3,12 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       CidrBlock: !Ref PublicCIDR
+      MapPublicIpOnLaunch: true
       VpcId: !Ref VpcIdParam
       AvailabilityZone: !Select [ !Ref AZnumber, !GetAZs '' ]
       Tags:
         - Key: Name
-          Value: publicSubnet
+          Value: !Join [ "-", [ "publicSubnet", !Ref AZnumber ] ]
   DBSubnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -16,7 +17,7 @@ Resources:
       AvailabilityZone: !Select [ !Ref AZnumber, !GetAZs '' ]
       Tags:
         - Key: Name
-          Value: DBSubnet
+          Value: !Join [ "-", [ "DBSubnet", !Ref AZnumber ] ]
 
   # Public RT
   RouteTablePublic:
@@ -25,7 +26,7 @@ Resources:
       VpcId: !Ref VpcIdParam
       Tags:
         - Key: Name
-          Value: rt-public
+          Value: !Join [ "-", [ "rt-public", !Ref AZnumber ] ]
   RouteTablePublicDefaultIPv4:
     Type: AWS::EC2::Route
     Properties:
